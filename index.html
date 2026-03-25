@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小鱼提醒计划 - 用户反馈</title>
+    <style>
+        body {
+            font-family: 'Arial', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            color: #5b4b8a;
+            margin-bottom: 10px;
+        }
+        .header p {
+            color: #666;
+            font-size: 18px;
+        }
+        .fish-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #444;
+        }
+        input[type="text"], input[type="email"], textarea, select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+        input[type="text"]:focus, input[type="email"]:focus, textarea:focus, select:focus {
+            border-color: #5b4b8a;
+            outline: none;
+        }
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .radio-option {
+            flex: 1;
+            min-width: 150px;
+        }
+        .radio-option input[type="radio"] {
+            display: none;
+        }
+        .radio-option label {
+            display: block;
+            padding: 15px;
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .radio-option input[type="radio"]:checked + label {
+            background: #5b4b8a;
+            color: white;
+            border-color: #5b4b8a;
+        }
+        .radio-option label:hover {
+            border-color: #5b4b8a;
+        }
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #5b4b8a 0%, #8a6bb8 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(91, 75, 138, 0.3);
+        }
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        .message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #888;
+            font-size: 14px;
+        }
+        .character-count {
+            text-align: right;
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .character-count.warning {
+            color: #ff6b6b;
+        }
+        .api-config {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .api-config label {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .api-config input {
+            width: 300px;
+            padding: 8px;
+            font-family: monospace;
+        }
+        .instructions {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .instructions h3 {
+            margin-top: 0;
+            color: #0c5460;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="fish-icon">🐠</div>
+            <h1>小鱼提醒计划</h1>
+            <p>请填写您的反馈，我们会认真听取并改进服务！</p>
+        </div>
+        
+        <div class="instructions">
+            <h3>📋 使用说明</h3>
+            <p>此表单将提交到小鱼提醒计划的反馈收集 API。您需要配置 API 端点地址和密钥才能正常使用。</p>
+            <p>部署说明：将此 HTML 文件部署到 GitHub Pages、Vercel 或任何静态托管服务。</p>
+        </div>
+        
+        <div class="api-config">
+            <label for="apiEndpoint">API 端点：</label>
+            <input type="text" id="apiEndpoint" value="https://your-api-domain.com/api/feedback" placeholder="https://your-api-domain.com/api/feedback">
+            <br><br>
+            <label for="apiKey">API 密钥：</label>
+            <input type="text" id="apiKey" value="your_api_key_here" placeholder="API 密钥">
+            <p><small>⚠️ 注意：在生产环境中，应将 API 密钥存储在环境变量中，而不是硬编码在 HTML 中。</small></p>
+        </div>
+        
+        <form id="feedbackForm">
+            <div class="form-group">
+                <label for="email">邮箱地址 *</label>
+                <input type="email" id="email" name="email" required placeholder="请输入您的邮箱地址">
+            </div>
+            
+            <div class="form-group">
+                <label for="name">姓名（可选）</label>
+                <input type="text" id="name" name="name" placeholder="请输入您的姓名">
+            </div>
+            
+            <div class="form-group">
+                <label>反馈类型 *</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="type-demand" name="feedback_type" value="demand" required>
+                        <label for="type-demand">需求建议</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="type-learning" name="feedback_type" value="learning_time">
+                        <label for="type-learning">学习时间</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="type-exercise" name="feedback_type" value="exercise_time">
+                        <label for="type-exercise">锻炼时间</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="type-other" name="feedback_type" value="other">
+                        <label for="type-other">其他反馈</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="content">反馈内容 *</label>
+                <textarea id="content" name="content" required placeholder="请详细描述您的反馈内容..."></textarea>
+                <div class="character-count" id="charCount">0/1000</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="notes">备注（可选）</label>
+                <input type="text" id="notes" name="notes" placeholder="其他需要说明的信息">
+            </div>
+            
+            <button type="submit" class="submit-btn">提交反馈</button>
+            
+            <div id="message" class="message"></div>
+        </form>
+        
+        <div class="footer">
+            <p>© 2025 小鱼提醒计划 | 您的反馈将帮助我们提供更好的服务</p>
+            <p>我们会在每晚整理反馈，并通过邮件回复处理结果</p>
+            <p><small>版本: 静态表单 v1.0 | API 版本: 1.0.0</small></p>
+        </div>
+    </div>
+    
+    <script>
+        // API 配置
+        const API_ENDPOINT = document.getElementById('apiEndpoint').value;
+        const API_KEY = document.getElementById('apiKey').value;
+        
+        // 字符计数
+        document.getElementById('content').addEventListener('input', function() {
+            const charCount = this.value.length;
+            const counter = document.getElementById('charCount');
+            counter.textContent = `${charCount}/1000`;
+            if (charCount > 900) {
+                counter.classList.add('warning');
+            } else {
+                counter.classList.remove('warning');
+            }
+        });
+        
+        // 表单提交
+        document.getElementById('feedbackForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = this.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = '提交中...';
+            submitBtn.disabled = true;
+            
+            // 收集表单数据
+            const formData = {
+                email: document.getElementById('email').value,
+                name: document.getElementById('name').value || null,
+                feedback_type: document.querySelector('input[name="feedback_type"]:checked').value,
+                content: document.getElementById('content').value,
+                notes: document.getElementById('notes').value || null
+            };
+            
+            // 验证
+            if (!formData.email || !formData.feedback_type || !formData.content) {
+                showMessage('请填写所有必填字段', 'error');
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+                return;
+            }
+            
+            try {
+                // 发送到 API
+                const response = await fetch(API_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': API_KEY
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok && result.success) {
+                    showMessage(result.message || '反馈提交成功！我们会在每晚整理反馈，并通过邮件回复处理结果。', 'success');
+                    document.getElementById('feedbackForm').reset();
+                    document.getElementById('charCount').textContent = '0/1000';
+                    document.getElementById('charCount').classList.remove('warning');
+                } else {
+                    showMessage(`提交失败：${result.message || '服务器错误'}`, 'error');
+                }
+                
+            } catch (error) {
+                showMessage(`网络错误：${error.message}`, 'error');
+                console.error('提交失败:', error);
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+        
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+            messageDiv.style.display = 'block';
+            
+            // 5秒后自动隐藏消息
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
+        
+        // 页面加载时检查URL参数（方便测试）
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const email = urlParams.get('email');
+            const type = urlParams.get('type');
+            
+            if (email) {
+                document.getElementById('email').value = email;
+            }
+            if (type) {
+                const radio = document.querySelector(`input[value="${type}"]`);
+                if (radio) {
+                    radio.checked = true;
+                }
+            }
+            
+            // 更新 API 配置显示
+            document.getElementById('apiEndpoint').addEventListener('change', function() {
+                API_ENDPOINT = this.value;
+            });
+            
+            document.getElementById('apiKey').addEventListener('change', function() {
+                API_KEY = this.value;
+            });
+        });
+    </script>
+</body>
+</html>
