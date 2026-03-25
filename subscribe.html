@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>锦鲤上岸计划 - 订阅申请</title>
+    <style>
+        body {
+            font-family: 'Arial', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+        .header h1 {
+            color: #5b4b8a;
+            margin-bottom: 10px;
+        }
+        .header p {
+            color: #666;
+            font-size: 17px;
+        }
+        .fish-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 22px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #444;
+        }
+        input[type="text"], input[type="email"], textarea, select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+        input:focus, textarea:focus, select:focus {
+            border-color: #5b4b8a;
+            outline: none;
+        }
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        select {
+            appearance: none;
+            background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%23666'/%3E%3C/svg%3E") no-repeat right 14px center;
+        }
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #5b4b8a 0%, #8a6bb8 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(91, 75, 138, 0.3);
+        }
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        .message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .notice {
+            background: #fff8e1;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            color: #856404;
+            border-left: 4px solid #ffc107;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 36px;
+            color: #888;
+            font-size: 14px;
+        }
+        .footer a {
+            color: #5b4b8a;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="fish-icon">🎏</div>
+            <h1>锦鲤上岸计划 - 订阅申请</h1>
+            <p>填写以下信息提交订阅申请，管理员确认后即可生效</p>
+        </div>
+
+        <div class="notice">
+            提交后需要管理员审核确认，审核通过后您将收到邮件通知。请确保填写正确的邮箱和支付信息。
+        </div>
+
+        <form id="subscribeForm">
+            <div class="form-group">
+                <label for="email">邮箱地址 *</label>
+                <input type="email" id="email" name="email" required placeholder="用于接收提醒和通知的邮箱">
+            </div>
+
+            <div class="form-group">
+                <label for="name">姓名（可选）</label>
+                <input type="text" id="name" name="name" placeholder="您的称呼">
+            </div>
+
+            <div class="form-group">
+                <label for="plan_name">订阅套餐 *</label>
+                <select id="plan_name" name="plan_name" required>
+                    <option value="">请选择套餐</option>
+                    <option value="月度套餐">月度套餐</option>
+                    <option value="季度套餐">季度套餐</option>
+                    <option value="年度套餐">年度套餐</option>
+                    <option value="体验套餐">体验套餐</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="payment_platform">支付平台</label>
+                <select id="payment_platform" name="payment_platform">
+                    <option value="">请选择支付平台</option>
+                    <option value="闲鱼">闲鱼</option>
+                    <option value="抖音">抖音</option>
+                    <option value="小红书">小红书</option>
+                    <option value="微信">微信</option>
+                    <option value="支付宝">支付宝</option>
+                    <option value="其他">其他</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="transaction_id">交易单号（可选）</label>
+                <input type="text" id="transaction_id" name="transaction_id" placeholder="支付平台的订单号或交易号">
+            </div>
+
+            <div class="form-group">
+                <label for="notes">备注（可选）</label>
+                <textarea id="notes" name="notes" placeholder="其他需要说明的信息，比如希望的提醒类型等"></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">提交订阅申请</button>
+
+            <div id="message" class="message"></div>
+        </form>
+
+        <div class="footer">
+            <p>&copy; 2025 锦鲤上岸计划 | 订阅申请提交后，管理员会尽快审核</p>
+            <p>已订阅？<a href="feedback_form_static.html">提交反馈</a></p>
+            <p><small>版本: 订阅表单 v1.0</small></p>
+        </div>
+    </div>
+
+    <script>
+        const _base = 'https://vm-0-5-ubuntu.tailf85c70.ts.net';
+        const _path = '/api/subscribe';
+
+        document.getElementById('subscribeForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const submitBtn = this.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = '提交中...';
+            submitBtn.disabled = true;
+
+            const formData = {
+                email: document.getElementById('email').value,
+                name: document.getElementById('name').value || null,
+                plan_name: document.getElementById('plan_name').value,
+                payment_platform: document.getElementById('payment_platform').value || null,
+                transaction_id: document.getElementById('transaction_id').value || null,
+                notes: document.getElementById('notes').value || null
+            };
+
+            if (!formData.email || !formData.plan_name) {
+                showMessage('请填写所有必填字段', 'error');
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+                return;
+            }
+
+            try {
+                const response = await fetch(_base + _path, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    showMessage(result.message || '订阅申请已提交，请等待管理员审核！', 'success');
+                    document.getElementById('subscribeForm').reset();
+                } else {
+                    showMessage(result.message || '提交失败，请稍后再试', 'error');
+                }
+            } catch (error) {
+                showMessage('网络错误：' + error.message, 'error');
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = 'message ' + type;
+            messageDiv.style.display = 'block';
+            setTimeout(function() { messageDiv.style.display = 'none'; }, 8000);
+        }
+
+        window.addEventListener('DOMContentLoaded', function() {
+            var params = new URLSearchParams(window.location.search);
+            if (params.get('email')) document.getElementById('email').value = params.get('email');
+            if (params.get('plan')) document.getElementById('plan_name').value = params.get('plan');
+            if (params.get('platform')) document.getElementById('payment_platform').value = params.get('platform');
+        });
+    </script>
+</body>
+</html>
