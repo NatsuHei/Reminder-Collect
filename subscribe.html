@@ -150,6 +150,11 @@
             </div>
 
             <div class="form-group">
+                <label for="exam_name">考试名称 *</label>
+                <input type="text" id="exam_name" name="exam_name" required placeholder="例如：软考中级/雅思/考研英语（二）">
+            </div>
+
+            <div class="form-group">
                 <label for="plan_name">订阅套餐 *</label>
                 <select id="plan_name" name="plan_name" required>
                     <option value="">请选择套餐</option>
@@ -179,8 +184,8 @@
             </div>
 
             <div class="form-group">
-                <label for="notes">备注（可选）</label>
-                <textarea id="notes" name="notes" placeholder="其他需要说明的信息，比如希望的提醒类型等"></textarea>
+                <label for="notes">提醒时间（可选）</label>
+                <textarea id="notes" name="notes" placeholder="请填写提醒时间（例如：2026-05-01 或 09:30）。不填则使用默认策略"></textarea>
             </div>
 
             <button type="submit" class="submit-btn">提交订阅申请</button>
@@ -210,13 +215,14 @@
             const formData = {
                 email: document.getElementById('email').value,
                 name: document.getElementById('name').value || null,
+                exam_name: document.getElementById('exam_name').value,
                 plan_name: document.getElementById('plan_name').value,
                 payment_platform: document.getElementById('payment_platform').value || null,
                 transaction_id: document.getElementById('transaction_id').value || null,
                 notes: document.getElementById('notes').value || null
             };
 
-            if (!formData.email || !formData.plan_name) {
+            if (!formData.email || !formData.exam_name || !formData.plan_name) {
                 showMessage('请填写所有必填字段', 'error');
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
@@ -259,6 +265,7 @@
             if (params.get('email')) document.getElementById('email').value = params.get('email');
             if (params.get('plan')) document.getElementById('plan_name').value = params.get('plan');
             if (params.get('platform')) document.getElementById('payment_platform').value = params.get('platform');
+            if (params.get('exam')) document.getElementById('exam_name').value = params.get('exam');
         });
     </script>
 </body>
