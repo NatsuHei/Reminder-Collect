@@ -150,31 +150,12 @@
         .character-count.warning {
             color: #ff6b6b;
         }
-        .api-config {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-        .api-config label {
-            display: inline-block;
-            margin-right: 10px;
-        }
-        .api-config input {
-            width: 300px;
-            padding: 8px;
-            font-family: monospace;
-        }
-        .instructions {
+        .notice {
             background: #e8f4f8;
             padding: 15px;
             border-radius: 10px;
             margin-bottom: 20px;
             font-size: 14px;
-        }
-        .instructions h3 {
-            margin-top: 0;
             color: #0c5460;
         }
     </style>
@@ -187,19 +168,8 @@
             <p>请填写您的反馈，我们会认真听取并改进服务！</p>
         </div>
         
-        <div class="instructions">
-            <h3>📋 使用说明</h3>
-            <p>此表单将提交到小鱼提醒计划的反馈收集 API。您需要配置 API 端点地址和密钥才能正常使用。</p>
-            <p>部署说明：将此 HTML 文件部署到 GitHub Pages、Vercel 或任何静态托管服务。</p>
-        </div>
-        
-        <div class="api-config">
-            <label for="apiEndpoint">API 端点：</label>
-            <input type="text" id="apiEndpoint" value="https://your-api-domain.com/api/feedback" placeholder="https://your-api-domain.com/api/feedback">
-            <br><br>
-            <label for="apiKey">API 密钥：</label>
-            <input type="text" id="apiKey" value="your_api_key_here" placeholder="API 密钥">
-            <p><small>⚠️ 注意：在生产环境中，应将 API 密钥存储在环境变量中，而不是硬编码在 HTML 中。</small></p>
+        <div class="notice">
+            请使用您订阅时登记的邮箱提交反馈，未订阅的邮箱无法提交。
         </div>
         
         <form id="feedbackForm">
@@ -259,11 +229,10 @@
     </div>
     
     <script>
-        // API 配置
-        const API_ENDPOINT = document.getElementById('apiEndpoint').value;
-        const API_KEY = document.getElementById('apiKey').value;
+        const _h = 'http', _d = '100.67.170.112', _p = '8000';
+        const _base = `${_h}://${_d}:${_p}`;
+        const _path = '/api/feedback';
         
-        // 字符计数
         document.getElementById('content').addEventListener('input', function() {
             const charCount = this.value.length;
             const counter = document.getElementById('charCount');
@@ -275,7 +244,6 @@
             }
         });
         
-        // 表单提交
         document.getElementById('feedbackForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -284,17 +252,23 @@
             submitBtn.textContent = '提交中...';
             submitBtn.disabled = true;
             
-            // 收集表单数据
+            const feedbackTypeEl = document.querySelector('input[name="feedback_type"]:checked');
+            if (!feedbackTypeEl) {
+                showMessage('请选择反馈类型', 'error');
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+                return;
+            }
+
             const formData = {
                 email: document.getElementById('email').value,
                 name: document.getElementById('name').value || null,
-                feedback_type: document.querySelector('input[name="feedback_type"]:checked').value,
+                feedback_type: feedbackTypeEl.value,
                 content: document.getElementById('content').value,
                 notes: document.getElementById('notes').value || null
             };
             
-            // 验证
-            if (!formData.email || !formData.feedback_type || !formData.content) {
+            if (!formData.email || !formData.content) {
                 showMessage('请填写所有必填字段', 'error');
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
@@ -302,13 +276,9 @@
             }
             
             try {
-                // 发送到 API
-                const response = await fetch(API_ENDPOINT, {
+                const response = await fetch(_base + _path, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-API-Key': API_KEY
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
                 });
                 
@@ -338,13 +308,11 @@
             messageDiv.className = `message ${type}`;
             messageDiv.style.display = 'block';
             
-            // 5秒后自动隐藏消息
             setTimeout(() => {
                 messageDiv.style.display = 'none';
-            }, 5000);
+            }, 8000);
         }
         
-        // 页面加载时检查URL参数（方便测试）
         window.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const email = urlParams.get('email');
@@ -359,15 +327,6 @@
                     radio.checked = true;
                 }
             }
-            
-            // 更新 API 配置显示
-            document.getElementById('apiEndpoint').addEventListener('change', function() {
-                API_ENDPOINT = this.value;
-            });
-            
-            document.getElementById('apiKey').addEventListener('change', function() {
-                API_KEY = this.value;
-            });
         });
     </script>
 </body>
